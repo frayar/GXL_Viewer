@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<meta charset="ISO-8859-1">
+		
+		<!-- Title -->
+		<title>GXL Viewer</title>
+		
+		<!-- Style sheet -->
+		<link href="style/style.css" rel="stylesheet" />
+		
+		<!-- AngularJS library -->
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+
+		<!-- Linkurious (Sigma.js) source -->
+		<script src="scripts/linkurious.js/src/sigma.core.js"></script>
+		<script src="scripts/linkurious.js/src/conrad.js"></script>
+		<script src="scripts/linkurious.js/src/utils/sigma.utils.js"></script>
+		<script src="scripts/linkurious.js/src/utils/sigma.polyfills.js"></script>
+		<script src="scripts/linkurious.js/src/sigma.settings.js"></script>
+		<script src="scripts/linkurious.js/src/classes/sigma.classes.dispatcher.js"></script>
+		<script src="scripts/linkurious.js/src/classes/sigma.classes.configurable.js"></script>
+		<script src="scripts/linkurious.js/src/classes/sigma.classes.graph.js"></script>
+		<script src="scripts/linkurious.js/src/classes/sigma.classes.camera.js"></script>
+		<script src="scripts/linkurious.js/src/classes/sigma.classes.quad.js"></script>
+		<script src="scripts/linkurious.js/src/captors/sigma.captors.mouse.js"></script>
+		<script src="scripts/linkurious.js/src/captors/sigma.captors.touch.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/sigma.renderers.canvas.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/sigma.renderers.webgl.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/sigma.renderers.svg.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/sigma.renderers.def.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/webgl/sigma.webgl.nodes.def.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/webgl/sigma.webgl.edges.def.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/webgl/sigma.webgl.edges.fast.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/canvas/sigma.canvas.labels.def.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/canvas/sigma.canvas.hovers.def.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/canvas/sigma.canvas.nodes.def.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/canvas/sigma.canvas.edges.def.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/canvas/sigma.canvas.edges.curve.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/canvas/sigma.canvas.extremities.def.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/svg/sigma.svg.utils.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/svg/sigma.svg.nodes.def.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/svg/sigma.svg.edges.def.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/svg/sigma.svg.edges.curve.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/svg/sigma.svg.labels.def.js"></script>
+		<script src="scripts/linkurious.js/src/renderers/svg/sigma.svg.hovers.def.js"></script>
+		<script src="scripts/linkurious.js/src/middlewares/sigma.middlewares.rescale.js"></script>
+		<script src="scripts/linkurious.js/src/middlewares/sigma.middlewares.copy.js"></script>
+		<script src="scripts/linkurious.js/src/misc/sigma.misc.animation.js"></script>
+		<script src="scripts/linkurious.js/src/misc/sigma.misc.bindEvents.js"></script>
+		<script src="scripts/linkurious.js/src/misc/sigma.misc.bindDOMEvents.js"></script>
+		<script src="scripts/linkurious.js/src/misc/sigma.misc.drawHovers.js"></script>
+		<!-- layout -->
+		<script src="scripts/linkurious.js/plugins/sigma.plugins.animate/sigma.plugins.animate.js"></script>
+		<script src="scripts/linkurious.js/plugins/sigma.layouts.fruchtermanReingold/sigma.layout.fruchtermanReingold.js"></script>
+		<!-- snapshot -->
+		<script src="scripts/linkurious.js/plugins/sigma.renderers.linkurious/settings.js"></script>
+		<script src="scripts/linkurious.js/plugins/sigma.renderers.snapshot/sigma.renderers.snapshot.js"></script>
+		
+		<!-- Controller file -->
+		<script src="scripts/controller.js"></script>
+	</head>
+	
+	
+	<body ng-controller="controller">
+
+		<!-- Main part of the page -->
+		<div id="wholePanel">
+
+			<!-- Controls panel -->
+			<div id="controlsPanel">
+				<!-- File importer -->
+				<input id="import" type="file" onchange="angular.element(this).scope().importGraph()" /><br />
+				<!-- Layout algorithm -->
+				<button id="layout" ng-click="layoutGraph()">Layout Graph</button>
+				<!-- Export graph -->
+				<button id="export" ng-click="exportGraph()" hidden>Export Graph</button>
+				<!-- Save image  -->
+				<button id="save" ng-click="saveImage()">Save Image</button>
+				<!-- Eraser -->
+				<button id="reset" ng-click="clearGraph(true)">Reset</button>
+				<!-- Help -->
+				<button id="help" ng-click="openAbout()">About</button>
+				<br />
+			</div>
+		
+			<!-- Graph area -->
+			<div id="graph-container">
+				<div id="graph"></div>
+			</div>
+		</div>	
+
+		<!-- The overlay -->
+		<div id="about" class="overlay">
+			<!-- Button to close the overlay navigation -->
+ 			<a href="javascript:void(0)" class="closebtn" ng-click="closeAbout()">&times;</a>
+
+			 <!-- Overlay content -->
+			 <div class="overlay-content">
+					<div id="logos">
+						<a href="http://www.univ-tours.fr/" target="_blank"><img class="logo" src="images/logoUnivTours.jpg" alt="Tours university logo"/></a>
+						<a href="http://li.univ-tours.fr/" target="_blank"><img class="logo" src="images/logo_LI.jpg" alt="Computer Science lab logo"/></a>
+						<a href="http://www.rfai.li.univ-tours.fr/" target="_blank"><img class="logo" src="images/logo_RFAI.jpg" alt="RFAI team logo"/></a>
+					</div>
+					<p>
+						The GXL Viewer platform has been developed by <a href="http://frederic.rayar.free.fr/" target="_blank">Fr&eacute;d&eacute;ric RAYAR</a>.<br/> 
+						Contact: <a href="mailto:frederic.rayar@univ-tours.fr">frederic.rayar {at} univ-tours {dot} fr</a>
+					</p>
+					<p>
+						This platform allows to: <i>(i)</i> display a *.gxl graph, <i>(ii)</i> layout it with the Fruchterman-Reingold graph drawing algorithm <br/> and <i>(iii)</i> save a *.png image of the rendered graph.
+					</p>
+		</div>	
+		
+	</body>
+</html>
